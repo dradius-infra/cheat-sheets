@@ -2,9 +2,11 @@
 
 ---
 
-## Chapter 1: Network Fundamentals
+# Chapter 1: Network Fundamentals
 
-### 1.1 Network Architecture, Topologies & Models
+## 1.1 Network Architecture, Topologies & Models
+
+### Campus & Data Center Models
 *   **Three-Tier Campus Hierarchical Model:**
     *   **Core Layer:** High-speed backbone switching/routing fabric optimized exclusively for packet switching speed; avoids CPU-intensive packet manipulation, filtering, or ACL processing.
     *   **Distribution Layer:** Policy-based boundaries, routing, packet filtering (ACLs), QoS policies, VLAN termination, and broadcast domain boundaries.
@@ -16,51 +18,114 @@
     *   *Spine Switches:* Form an all-to-all non-blocking backbone. Spine switches connect exclusively to leaf switches, never to other spines.
     *   *Leaf Switches:* Connect to every spine switch and aggregate end systems (bare-metal servers, hypervisors, storage clusters).
     *   *Latency Traversal:* Every server-to-server path is deterministic and spans precisely two hops (Leaf → Spine → Leaf).
-*   **WAN Topologies:**
-    *   *Point-to-Point (P2P):* Dedicated serial, leased line, or Layer 2 tunnel between two endpoints.
-    *   *Hub-and-Spoke (Star):* Multiple remote spoke sites communicate with a central hub node; spoke-to-spoke transit requires hair-pinning through the hub.
-    *   *Full Mesh:* Every node maintains a direct physical or logical connection to every other node; link formula: `n(n-1)/2`. High redundancy, high cost.
-    *   *Partial Mesh:* Selective redundant links configured between high-priority nodes to balance availability and transit costs.
+
+### WAN Topologies & SOHO
+*   **Point-to-Point (P2P):** Dedicated serial, leased line, or Layer 2 tunnel between two endpoints.
+*   **Hub-and-Spoke (Star):** Multiple remote spoke sites communicate with a central hub node; spoke-to-spoke transit requires hair-pinning through the hub.
+*   **Full Mesh:** Every node maintains a direct physical or logical connection to every other node; link formula: `n(n-1)/2`. High redundancy, high cost.
+*   **Partial Mesh:** Selective redundant links configured between high-priority nodes to balance availability and transit costs.
 *   **SOHO (Small Office / Home Office) Network Architecture:** Integrated edge hardware uniting routing, stateful firewalling, NAT overload, manageable switching, and wireless connectivity into a unified deployment.
     *   *Example:* A gateway router terminates PPPoE, handles stateful filtering, and routes traffic over an 802.1Q trunk down to a managed switch and wireless access point.
-*   **Cloud Computing Models & Service Architectures:**
-    *   *On-Premises:* Full physical, hypervisor, and network stack owned, powered, cooled, and maintained locally.
-    *   *IaaS (Infrastructure as a Service):* Cloud vendor provisions compute, virtualization, storage, and networking; user manages OS, runtimes, and apps (e.g., AWS EC2).
-    *   *PaaS (Platform as a Service):* Vendor manages OS, networking, and scaling; user supplies and deploys application code (e.g., AWS Elastic Beanstalk).
-    *   *SaaS (Software as a Service):* Fully vendor-managed application delivery (e.g., Microsoft 365, Google Workspace).
-    *   *Public Cloud:* Multi-tenant shared infrastructure managed by hyperscalers (AWS, Azure, GCP).
-    *   *Private Cloud:* Dedicated single-tenant infrastructure configured on-premises or via private data centers.
-    *   *Hybrid Cloud:* Seamless integration bridging on-premises infrastructure with public cloud instances via IPsec or direct interconnects.
 
-### 1.2 Layer 1 (Physical Media, Cabling & Interfaces)
-*   **Copper Ethernet Cabling (Twisted Pair):**
-    *   *Cat5e:* Up to 1 Gbps at 100 MHz, max run distance 100 meters.
-    *   *Cat6:* 1 Gbps up to 100m, 10 Gbps supported up to 55m (250 MHz).
-    *   *Cat6a:* Full 10 Gbps support up to the maximum 100m distance (500 MHz); enhanced shielding against alien crosstalk.
-*   **Pinouts & Cable Types:**
-    *   *T568A vs. T568B:* Standard color code sequences. T568B order: White/Orange, Orange, White/Green, Blue, White/Blue, Green, White/Brown, Brown.
-    *   *Straight-Through Cable:* Both ends terminated using the same standard (T568B to T568B); connects differing device types (Switch to Host, Switch to Router).
-    *   *Crossover Cable:* One end T568A, opposite end T568B; connects like devices without auto-negotiation (Switch to Switch, Router to PC).
-    *   *Auto-MDIX (Automatic Medium-Dependent Interface Crossover):* NIC firmware algorithm that automatically detects cable transmission pairs and corrects internal pinouts dynamically.
-    *   *Rollover (Console) Cable:* RJ45-to-DB9/USB pinout reversing pin order completely; dedicated to Out-of-Band (OOB) serial terminal access.
-*   **Fiber Optic Cabling:**
-    *   *Single-Mode Fiber (SMF):* Extremely thin silica core (~9 µm); utilizes laser diode transmitters; eliminates modal dispersion; used for long-haul and ISP backbone spans (tens of kilometers).
-    *   *Multi-Mode Fiber (MMF):* Wider core (50–62.5 µm); utilizes LED or VCSEL light sources; light rays bounce at variable angles causing modal dispersion; restricted to local campus and datacenter runs (typically up to 300–500m).
-*   **Pluggable Transceivers:**
-    *   *SFP (Small Form-factor Pluggable):* 1 Gbps hot-swappable optical or copper modular interface.
-    *   *SFP+:* 10 Gbps modular transceiver retaining the standard SFP physical footprint.
-    *   *QSFP / QSFP28:* Quad SFP packaging delivering 40 Gbps and 100 Gbps channel bonding.
-*   **PoE (Power over Ethernet - IEEE Standards):**
-    *   *802.3af (Type 1 - PoE):* Up to 15.4W at the PSE (Power Sourcing Equipment), minimum 12.95W delivered at the PD (Powered Device).
-    *   *802.3at (Type 2 - PoE+):* Up to 30W at PSE, 25.5W delivered at the PD. Powers dual-band Wi-Fi 6 APs and PTZ cameras.
-    *   *802.3bt (Type 3/4 - PoE++ / 4PPoE):* Delivers 60W to 90W+ across all four twisted pairs for smart displays, servers, and high-wattage IoT hardware.
-*   **Physical Interface Diagnostics & Errors:**
-    *   *Speed/Duplex Mismatch:* One side locked at 100/Full, partner auto-negotiating to 100/Half; generates collisions, late collisions, and frame check sequence (FCS) errors.
-    *   *Runts:* Packets smaller than the minimum 64-byte Ethernet standard, typically caused by collisions or cable noise.
-    *   *Giants:* Packets exceeding the maximum standard MTU (e.g., larger than 1518 bytes untagged) arriving on non-jumbo frame interfaces.
-    *   *FCS / CRC Errors:* Frames failing checksum validation, identifying faulty copper termination, EMI interference, or bad transceivers.
+### Cloud Computing Models & Service Architectures
+*   **On-Premises:** Full physical, hypervisor, and network stack owned, powered, cooled, and maintained locally.
+*   **IaaS (Infrastructure as a Service):** Cloud vendor provisions compute, virtualization, storage, and networking; user manages OS, runtimes, and apps (e.g., AWS EC2).
+*   **PaaS (Platform as a Service):** Vendor manages OS, networking, and scaling; user supplies and deploys application code (e.g., AWS Elastic Beanstalk).
+*   **SaaS (Software as a Service):** Fully vendor-managed application delivery (e.g., Microsoft 365, Google Workspace).
+*   **Public Cloud:** Multi-tenant shared infrastructure managed by hyperscalers (AWS, Azure, GCP).
+*   **Private Cloud:** Dedicated single-tenant infrastructure configured on-premises or via private data centers.
+*   **Hybrid Cloud:** Seamless integration bridging on-premises infrastructure with public cloud instances via IPsec or direct interconnects.
 
-### 1.3 Layer 2 Foundations & Encapsulation
+### Server Virtualization & Container Fundamentals
+*   **Hypervisors:**
+    *   **Type 1 (Bare-Metal):** Installed directly on physical bare-metal hardware without a host OS; delivers high performance and low latency (e.g., VMware ESXi, Cisco UCS, Microsoft Hyper-V).
+    *   **Type 2 (Hosted):** Runs as software on top of an existing host OS; introduces resource overhead (e.g., VMware Workstation, Oracle VirtualBox).
+*   **Virtual Machines (VMs):** Fully isolated instances bundling virtual hardware, kernel, and a complete Guest OS managed by a hypervisor.
+*   **Containers:** Lightweight, shared-kernel execution environments (e.g., Docker) sharing the host OS kernel and isolating user-space processes; faster deployment and smaller footprint than VMs.
+*   **Virtual Switching:** Software-based Layer 2 forwarding entities (vSwitches) internal to hypervisors bridging traffic between VM vNICs and physical network interfaces (pNICs).
+*   **VRF (Virtual Routing and Forwarding):** IP network virtualization technique allowing multiple, completely isolated routing tables to coexist simultaneously on a single router or L3 switch; enables overlapping IP address spaces without leaking routes.
+
+### Network Device Roles & Security Functions
+*   **Routers:** Layer 3 forwarding devices interconnecting heterogeneous network boundaries, terminating broadcast domains, and making route determinations using IP routing tables.
+*   **Layer 2 Switches:** Hardware-based forwarding devices building local collision-free domains and forwarding Ethernet frames based strictly on MAC address tables.
+*   **Multilayer (L3) Switches:** High-density switching hardware integrating ASIC-accelerated Layer 3 routing engines (CEF) with Layer 2 switching capabilities (SVIs and routed ports).
+*   **Next-Generation Firewalls (NGFW):** Stateful inspection platforms extending inspection up to Layer 7 (Application layer), integrating Application Visibility and Control (AVC), threat intelligence, and SSL/TLS decryption.
+*   **Next-Generation Intrusion Prevention Systems (NGIPS):** Inline threat detection and mitigation engines performing real-time Deep Packet Inspection (DPI) and behavioral heuristics to stop exploits.
+*   **Controllers:** Centralized control plane engines decoupling management from data forwarding (e.g., Cisco DNA Center / Catalyst Center for SDN campus management, and Wireless LAN Controllers for central RF/AP policy control).
+*   **Endpoints & Servers:** Traffic generation and processing endpoints; servers host shared network resources/services while endpoints initiate client application sessions.
+
+### Wireless Architectures & RF Fundamentals
+*   **Radio Frequencies & Non-Overlapping Channels:**
+    *   **2.4 GHz:** 11 standard channels (North America) / 13 (ETSI); channels 1, 6, and 11 are non-overlapping with 20 MHz bandwidth. Higher range, higher interference.
+    *   **5 GHz:** 24+ non-overlapping 20 MHz channels (UNII bands); shorter propagation range, significantly higher throughput and capacity.
+    *   **6 GHz (Wi-Fi 6E / Wi-Fi 7):** Wide spectrum up to 1200 MHz allocating up to seven 160 MHz channels without legacy interference.
+*   **Wireless Terminology:**
+    *   **BSS (Basic Service Set):** Single AP providing service to associated wireless stations; identified by a BSSID (the Layer 2 MAC address of the AP radio).
+    *   **ESS (Extended Service Set):** Multiple BSS cells interconnected across a common Layer 2 distribution system sharing the same SSID to allow seamless client roaming.
+    *   **SSID (Service Set Identifier):** Human-readable alphanumeric string advertising wireless network presence.
+*   **Wireless Encryption & Security:**
+    *   *WEP:* Deprecated 64/128-bit RC4 encryption; highly vulnerable.
+    *   *WPA:* Temporal Key Integrity Protocol (TKIP) with dynamic keys; interim solution.
+    *   *WPA2:* Advanced Encryption Standard (AES) coupled with Counter Mode Cipher Block Chaining Message Authentication Code Protocol (CCMP); standard enterprise deployment.
+    *   *WPA3:* Simultaneous Authentication of Equals (SAE) resistant to offline dictionary attacks; 192-bit cryptographic suite for Enterprise.
+*   **Access Point Operational Modes:**
+    *   **Autonomous (Fat AP):** Self-contained AP configuration where RF management, QoS, security policies, and 802.11 frames are terminated locally on the AP.
+    *   **Lightweight AP (LAP) & Split-MAC Architecture:** Divides MAC functions between the AP and a centralized WLC:
+        *   *Real-Time MAC (LAP):* Beacon transmission, probe response handling, frame exchange/acknowledgments, and encryption/decryption.
+        *   *Management MAC (WLC):* 802.11 authentication, association handling, radio resource management (RRM), and QoS policy enforcement.
+    *   **CAPWAP (Control and Provisioning of Wireless Access Points):** Encrypted tunneling protocol between LAP and WLC:
+        *   *Control Plane:* UDP port 5246 (DTLS encrypted by default).
+        *   *Data Plane:* UDP port 5247 (Tunneling client data payloads; optional DTLS encryption).
+    *   **Cloud-Managed Architecture:** Centralized cloud-based control and telemetry dashboard (e.g., Cisco Meraki, Cisco Catalyst Center) directing out-of-band management while data stays local.
+
+---
+
+## 1.2 Layer 1 (Physical Media, Cabling & Interfaces)
+
+### Connection Types & Media Access
+*   **Ethernet Shared Media (Half-Duplex):**
+    *   Shared bandwidth segment (e.g., Legacy Hubs); nodes must compete for access.
+    *   *CSMA/CD (Carrier Sense Multiple Access with Collision Detection):* Access protocol where stations listen before transmitting; if a collision occurs, a jam signal is sent, and nodes invoke a random truncated binary exponential backoff timer.
+*   **Point-to-Point Media (Full-Duplex):**
+    *   Dedicated transmission pairs between two nodes (e.g., Switch to Switch or Switch to Host); collisions are physically impossible, disabling CSMA/CD requirements.
+
+### Copper Ethernet Cabling (Twisted Pair)
+*   **Cat5e:** Up to 1 Gbps at 100 MHz, max run distance 100 meters.
+*   **Cat6:** 1 Gbps up to 100m, 10 Gbps supported up to 55m (250 MHz).
+*   **Cat6a:** Full 10 Gbps support up to the maximum 100m distance (500 MHz); enhanced shielding against alien crosstalk.
+
+### Pinouts & Cable Types
+*   **T568A vs. T568B:** Standard color code sequences. T568B order: White/Orange, Orange, White/Green, Blue, White/Blue, Green, White/Brown, Brown.
+*   **Straight-Through Cable:** Both ends terminated using the same standard (T568B to T568B); connects differing device types (Switch to Host, Switch to Router).
+*   **Crossover Cable:** One end T568A, opposite end T568B; connects like devices without auto-negotiation (Switch to Switch, Router to PC).
+*   **Auto-MDIX (Automatic Medium-Dependent Interface Crossover):** NIC firmware algorithm that automatically detects cable transmission pairs and corrects internal pinouts dynamically.
+*   **Rollover (Console) Cable:** RJ45-to-DB9/USB pinout reversing pin order completely; dedicated to Out-of-Band (OOB) serial terminal access.
+
+### Fiber Optic Cabling
+*   **Single-Mode Fiber (SMF):** Extremely thin silica core (~9 µm); utilizes laser diode transmitters; eliminates modal dispersion; used for long-haul and ISP backbone spans (tens of kilometers).
+*   **Multi-Mode Fiber (MMF):** Wider core (50–62.5 µm); utilizes LED or VCSEL light sources; light rays bounce at variable angles causing modal dispersion; restricted to local campus and datacenter runs (typically up to 300–500m).
+
+### Pluggable Transceivers
+*   **SFP (Small Form-factor Pluggable):** 1 Gbps hot-swappable optical or copper modular interface.
+*   **SFP+:** 10 Gbps modular transceiver retaining the standard SFP physical footprint.
+*   **QSFP / QSFP28:** Quad SFP packaging delivering 40 Gbps and 100 Gbps channel bonding.
+
+### PoE (Power over Ethernet - IEEE Standards)
+*   **802.3af (Type 1 - PoE):** Up to 15.4W at the PSE (Power Sourcing Equipment), minimum 12.95W delivered at the PD (Powered Device).
+*   **802.3at (Type 2 - PoE+):** Up to 30W at PSE, 25.5W delivered at the PD. Powers dual-band Wi-Fi 6 APs and PTZ cameras.
+*   **802.3bt (Type 3/4 - PoE++ / 4PPoE):** Delivers 60W to 90W+ across all four twisted pairs for smart displays, servers, and high-wattage IoT hardware.
+
+### Physical Interface Diagnostics & Errors
+*   **Speed/Duplex Mismatch:** One side locked at 100/Full, partner auto-negotiating to 100/Half; generates collisions, late collisions, and frame check sequence (FCS) errors.
+*   **Runts:** Packets smaller than the minimum 64-byte Ethernet standard, typically caused by collisions or cable noise.
+*   **Giants:** Packets exceeding the maximum standard MTU (e.g., larger than 1518 bytes untagged) arriving on non-jumbo frame interfaces.
+*   **FCS / CRC Errors:** Frames failing checksum validation, identifying faulty copper termination, EMI interference, or bad transceivers.
+
+---
+
+## 1.3 Layer 2 Foundations & Encapsulation
+
+### Models & PDU Terminology
 *   **OSI Reference Model vs. TCP/IP Stack:**
     *   *OSI Layers:* 7-Application, 6-Presentation, 5-Session, 4-Transport, 3-Network, 2-Data Link, 1-Physical.
     *   *TCP/IP Layers:* 4-Application, 3-Transport, 2-Internet, 1-Network Access.
@@ -70,6 +135,8 @@
     *   L2: Frame (Ethernet).
     *   L1: Bits (Raw electrical/optical transmission).
 *   **Encapsulation / Decapsulation:** Process of wrapping higher-level PDUs with lower-level headers and trailers on egress, and stripping them layer-by-layer on ingress.
+
+### Addressing & Transmission
 *   **MAC Address (EUI-48 Format):** 48-bit hex address formatted as `XX:XX:XX:XX:XX:XX` or `XXXX.XXXX.XXXX`.
     *   *OUI (Organizationally Unique Identifier):* First 24 bits designating the hardware manufacturer.
     *   *Device Serial:* Final 24 bits uniquely assigned by the manufacturer.
@@ -81,18 +148,63 @@
     *   *Multicast:* Point-to-multipoint transmission addressed to a subscribed group (e.g., OSPF `224.0.0.5`).
     *   *Broadcast:* Point-to-all transmission within a broadcast domain (L2 MAC: `FF:FF:FF:FF:FF:FF`, L3 IPv4: `255.255.255.255`).
 
-### 1.4 IPv4 Addressing, Subnetting & Mathematics
-*   **IPv4 Header Fields:**
-    *   *Version (4 bits):* IP version (`0100` for IPv4).
-    *   *IHL (4 bits):* Internet Header Length (minimum 20 bytes).
-    *   *Type of Service / DSCP (8 bits):* Quality of Service marking and congestion notification.
-    *   *Total Length (16 bits):* Full size of the IP packet including header and data payload.
-    *   *Identification, Flags, Fragment Offset (32 bits total):* Controls packet fragmentation and reconstruction.
-    *   *TTL (Time-to-Live, 8 bits):* Decremented by 1 at every L3 hop; prevents infinite loops by dropping packets at TTL=0 with ICMP Type 11 (Time Exceeded).
-    *   *Protocol (8 bits):* Encapsulated L4 protocol (1 = ICMP, 6 = TCP, 17 = UDP, 89 = OSPF).
-    *   *Header Checksum (16 bits):* Error verification for the IPv4 header only.
-    *   *Source & Destination IP Addresses (32 bits each).*
-*   **Subnetting Reference Table:**
+### Layer 2 Forwarding Mechanics (Switch Data Plane Operation)
+*   **Learning Phase:** Switch inspects the Source MAC address of inbound frames on an interface. If missing, it binds the MAC, ingress port, and VLAN into the MAC Address Table (CAM Table) with a default 300-second aging timer; if existing, it refreshes the timer.
+*   **Forwarding Phase:** Switch inspects the Destination MAC address:
+    *   *Known Unicast:* If Destination MAC matches a known CAM table entry, forward out that specific port only.
+    *   *Unknown Unicast:* If Destination MAC is absent from the CAM table, flood the frame out all ports in that VLAN except the ingress port.
+    *   *Broadcast / Multicast:* Flood the frame out all ports in the assigned VLAN except the ingress port.
+*   **ARP Table vs. MAC Address Table:**
+    *   *ARP Table:* Resolves Layer 3 IP addresses to Layer 2 MAC addresses on hosts and Layer 3 interfaces (`show ip arp`).
+    *   *MAC Address Table (CAM Table):* Resolves Layer 2 MAC addresses to physical switch ports on Layer 2 switches (`show mac address-table`).
+
+---
+
+## 1.4 Layer 4 Transport Protocols & Port Numbers
+
+### Transport Protocols
+*   **TCP (Transmission Control Protocol - Connection-Oriented):**
+    *   *Characteristics:* Reliable, guaranteed in-order delivery, flow control via dynamic windowing, and congestion avoidance.
+    *   *Three-Way Handshake:* SYN → SYN-ACK → ACK for session initialization. Graceful teardown via FIN/ACK exchange or immediate abort via RST.
+    *   *Header Overhead:* 20 bytes baseline (up to 60 bytes with options).
+*   **UDP (User Datagram Protocol - Connectionless):**
+    *   *Characteristics:* Unreliable, lightweight, best-effort delivery without sequencing, acknowledgments, or flow control. Minimal latency overhead.
+    *   *Header Overhead:* Fixed 8 bytes.
+
+### Common Well-Known Application Ports (0–1023)
+
+| Port Number | Protocol | Transport | Description |
+|---|---|---|---|
+| `20 / 21` | FTP | TCP | File Transfer Protocol (Data / Control) |
+| `22` | SSH / SFTP | TCP | Secure Shell / Secure FTP |
+| `23` | Telnet | TCP | Cleartext terminal emulation |
+| `25` | SMTP | TCP | Simple Mail Transfer Protocol |
+| `53` | DNS | UDP / TCP | Domain Name System (Queries: UDP / Zone transfers: TCP) |
+| `67 / 68` | DHCP | UDP | Dynamic Host Configuration Protocol (Server: 67 / Client: 68) |
+| `69` | TFTP | UDP | Trivial File Transfer Protocol |
+| `80` | HTTP | TCP | Hypertext Transfer Protocol |
+| `110` | POP3 | TCP | Post Office Protocol v3 |
+| `123` | NTP | UDP | Network Time Protocol |
+| `143` | IMAP4 | TCP | Internet Message Access Protocol |
+| `161 / 162` | SNMP | UDP | Simple Network Management Protocol (Poll: 161 / Traps: 162) |
+| `443` | HTTPS | TCP | HTTP Secure over TLS/SSL |
+
+---
+
+## 1.5 IPv4 Addressing, Subnetting & Mathematics
+
+### IPv4 Header Fields
+*   **Version (4 bits):** IP version (`0100` for IPv4).
+*   **IHL (4 bits):** Internet Header Length (minimum 20 bytes).
+*   **Type of Service / DSCP (8 bits):** Quality of Service marking and congestion notification.
+*   **Total Length (16 bits):** Full size of the IP packet including header and data payload.
+*   **Identification, Flags, Fragment Offset (32 bits total):** Controls packet fragmentation and reconstruction.
+*   **TTL (Time-to-Live, 8 bits):** Decremented by 1 at every L3 hop; prevents infinite loops by dropping packets at TTL=0 with ICMP Type 11 (Time Exceeded).
+*   **Protocol (8 bits):** Encapsulated L4 protocol (1 = ICMP, 6 = TCP, 17 = UDP, 89 = OSPF).
+*   **Header Checksum (16 bits):** Error verification for the IPv4 header only.
+*   **Source & Destination IP Addresses:** 32 bits each.
+
+### Subnetting Reference Table
 
 | CIDR | Subnet Mask | Total IPs | Usable Hosts | Block Size (Magic Number) |
 |---|---|---|---|---|
@@ -106,10 +218,12 @@
 | `/31` | `255.255.255.254` | 2 | 2 (RFC 3021 Point-to-Point) | 2 |
 | `/32` | `255.255.255.255` | 1 | 1 (Host / Loopback) | 1 |
 
-*   **Subnetting Calculation Rules:**
-    *   *Total IPs:* `2^(32 - prefix)`
-    *   *Usable Hosts:* `2^(32 - prefix) - 2` (subtract Network ID and Broadcast address, except on `/31`).
-    *   *Magic Number (Block Size):* `256 - [interesting octet value of subnet mask]`.
+### Subnetting Calculation Rules
+*   **Total IPs:** `2^(32 - prefix)`
+*   **Usable Hosts:** `2^(32 - prefix) - 2` (subtract Network ID and Broadcast address, except on `/31`).
+*   **Magic Number (Block Size):** `256 - [interesting octet value of subnet mask]`.
+
+### Address Classes & Special Ranges
 *   **Private Address Space (RFC 1918):**
     *   Class A: `10.0.0.0/8` (`10.0.0.0` to `10.255.255.255`)
     *   Class B: `172.16.0.0/12` (`172.16.0.0` to `172.31.255.255`)
@@ -119,19 +233,35 @@
     *   *APIPA (Link-Local):* `169.254.0.0/16` (Host self-assigned when DHCP discovery times out).
     *   *Carrier-Grade NAT (RFC 6598):* `100.64.0.0/10` (ISP shared address pool).
 
-### 1.5 IPv6 Fundamentals & Architecture
+### Host IP Configuration & Default Gateway Logic
+*   **Local vs. Remote Subnet Determination:** A host executes a bitwise logical AND operation between the destination IP address and its configured subnet mask:
+    *   *Matching Network ID:* Destination is local; host checks local ARP cache or broadcasts an ARP request directly for the target host MAC.
+    *   *Differing Network ID:* Destination is remote; host forwards the frame to the configured Default Gateway MAC address (resolving it via ARP if not cached).
+*   **Operating System IP Verification Commands:**
+    *   *Windows:* `ipconfig /all` (Display IP, mask, gateway, DNS), `route print` (Routing table), `arp -a` (View ARP cache), `netstat -ano` (Active sockets/ports).
+    *   *Linux / macOS:* `ip addr` / `ifconfig` (Display interfaces and IPs), `ip route` / `netstat -rn` (Display routing table), `ip neigh` / `arp -n` (ARP table), `ss -tulpn` / `netstat` (Socket listening states).
+
+---
+
+## 1.6 IPv6 Fundamentals & Architecture
+
+### Address Structure & Compression
 *   **IPv6 Structure:** 128-bit address written as eight groups of four hexadecimal digits separated by colons (e.g., `2001:0db8:85a3:0000:0000:8a2e:0370:7334`).
 *   **Compression Rules:**
     1.  *Omit Leading Zeros:* `0000` → `0`, `0db8` → `db8`.
     2.  *Double Colon (::):* Replace a single contiguous sequence of all-zero blocks with `::` (can be applied only once per address).
     *   *Compressed Result:* `2001:db8:85a3::8a2e:370:7334`.
-*   **IPv6 Address Types:**
-    *   *Global Unicast Address (GUA):* Publicly routable, internet-facing scope; begins with binary `001` (starts with `2000::/3`).
-    *   *Unique Local Address (ULA):* Private internal routable scope; starts with `fc00::/7` (practically `fd00::/8`).
-    *   *Link-Local Address (LLA):* Mandatory per interface; non-routable beyond local link; used for routing protocols and neighbor discovery; starts with `fe80::/10`.
-    *   *Multicast:* Replaces broadcast; starts with `ff00::/8` (e.g., `ff02::1` = All Nodes, `ff02::2` = All Routers, `ff02::5` = OSPFv3 All Routers).
-    *   *Loopback:* `::1/128`.
-    *   *Unspecified Address:* `::/128` (Used during DAD).
+
+### IPv6 Address Types
+*   **Global Unicast Address (GUA):** Publicly routable, internet-facing scope; begins with binary `001` (starts with `2000::/3`).
+*   **Unique Local Address (ULA):** Private internal routable scope; starts with `fc00::/7` (practically `fd00::/8`).
+*   **Link-Local Address (LLA):** Mandatory per interface; non-routable beyond local link; used for routing protocols and neighbor discovery; starts with `fe80::/10`.
+*   **Multicast:** Replaces broadcast; starts with `ff00::/8` (e.g., `ff02::1` = All Nodes, `ff02::2` = All Routers, `ff02::5` = OSPFv3 All Routers).
+*   **Anycast:** One-to-nearest communication model; identical unicast address assigned to multiple interfaces across different routing nodes; routers deliver traffic to the topologically closest node via routing metrics.
+*   **Loopback:** `::1/128`.
+*   **Unspecified Address:** `::/128` (Used during DAD).
+
+### Auto-Configuration & Discovery
 *   **EUI-64 (Extended Unique Identifier):** Automatically derives a 64-bit interface identifier from a 48-bit MAC address:
     1.  Split 48-bit MAC into two equal 24-bit halves.
     2.  Insert hexadecimal `FF:FE` in the middle.
@@ -141,15 +271,23 @@
     *   *Router Advertisement (RA):* Routers periodically announce prefixes, default gateway, and MTU (multicast to `ff02::1`).
     *   *Neighbor Solicitation (NS):* Resolves target Layer 2 MAC addresses (replaces ARP requests) and performs DAD.
     *   *Neighbor Advertisement (NA):* Layer 2 address resolution reply (replaces ARP replies).
-    *   *DAD (Duplicate Address Detection):* Host sends NS for its own planned IP to ensure no other device claims it before binding.
+*   **DAD (Duplicate Address Detection):** Host sends NS for its own planned IP to ensure no other device claims it before binding.
 *   **SLAAC (Stateless Address Autoconfiguration):** Client learns network prefix from ICMPv6 RA messages, then automatically constructs its 64-bit Host ID using EUI-64 or random privacy extensions without a DHCPv6 server.
 
-### 1.6 Verification CLI Commands
+---
+
+## 1.7 Verification CLI Commands
+
 ```text
 show ip interface brief         ! View L1 status, L2 protocol state, and assigned IPv4 addresses
 show ipv6 interface brief       ! View configured IPv6 link-local and global unicast addresses per port
 show interfaces <id>            ! Inspect speed, duplex, MTU, bandwidth, CRC errors, runts, and giants
 show controllers <id>           ! Inspect underlying hardware controller and physical cabling layer
+show mac address-table          ! Inspect dynamically learned and static Layer 2 MAC addresses per port/VLAN
+show ip arp                     ! Display the Layer 3 to Layer 2 address resolution table (IP-to-MAC mapping)
+show version                    ! View device uptime, IOS image version, configuration register, and system hardware
+show hosts                      ! Inspect cached host-name to IP address mappings (DNS cache)
+terminal length <0-512>         ! Adjust CLI screen pause behavior (0 disables the --More-- prompt) 
 ```
 
 ---
