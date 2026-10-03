@@ -1,5 +1,4 @@
-# CCNA 200-301 | Domain 1: Network Fundamentals (100% Master Deck)
-
+# CCNA 200-301 | Domain 1: Network Fundamentals
 ---
 
 ## High-Yield Anchors
