@@ -1,9 +1,4 @@
 # CCNA 200-301 | Domain 1: Network Fundamentals
-<<<<<<< HEAD
-=======
-
->>>>>>> 4416d58 (Fixed bug)
----
 
 ## High-Yield Anchors
 
